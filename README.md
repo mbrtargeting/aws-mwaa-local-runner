@@ -2,6 +2,8 @@
 
 This repository provides a command line interface (CLI) utility that replicates an Amazon Managed Workflows for Apache Airflow (MWAA) environment locally.
 
+The code in this repo refer to this [repo](https://github.com/aws/aws-mwaa-local-runner) which is offically recognized by AWS for running the MWAA locally.
+
 ## About the CLI
 
 The CLI builds a Docker container image locally that’s similar to a MWAA production image. This allows you to run a local Apache Airflow environment to develop and test DAGs, custom plugins, and dependencies before deploying to MWAA.
@@ -9,9 +11,6 @@ The CLI builds a Docker container image locally that’s similar to a MWAA produ
 ## What this repo contains
 
 ```text
-dags/
-  requirements.txt
-  tutorial.py
 docker/
   .gitignore
   mwaa-local-env
@@ -30,16 +29,21 @@ docker/
   Dockerfile
 ```
 
+## What we changed
+1. We mount the dags folder from our local dir `~/development/airflow/dags` to the docker container so that the code changed locally will be automatically sync.
+
+2. We mount the `requirements.txt` from our local dir `~/development/airflow/dags/requirements.txt` to the docker container so that the dependencies will be automatically sync.
+
 ## Prerequisites
 
-- **macOS**: [Install Docker Desktop](https://docs.docker.com/desktop/).
-- **Linux/Ubuntu**: [Install Docker Compose](https://docs.docker.com/compose/install/) and [Install Docker Engine](https://docs.docker.com/engine/install/).
-- **Windows**: Windows Subsystem for Linux (WSL) to run the bash based command `mwaa-local-env`. Please follow [Windows Subsystem for Linux Installation (WSL)](https://docs.docker.com/docker-for-windows/wsl/) and [Using Docker in WSL 2](https://code.visualstudio.com/blogs/2020/03/02/docker-in-wsl2), to get started.
+- Have docker installed and enabled
+- Clone the `ssp-airflow` repo to local at dir such as `~/development/airflow/`
+
 
 ## Get started
 
 ```bash
-git clone https://github.com/aws/aws-mwaa-local-runner.git
+git clone https://github.com/mbrtargeting/aws-mwaa-local-runner.git
 cd aws-mwaa-local-runner
 ```
 
@@ -84,19 +88,18 @@ The following section describes where to add your DAG code and supporting files.
 
 #### DAGs
 
-1. Add DAG code to the `dags/` folder.
-2. To run the sample code in this repository, see the `tutorial.py` file.
+Add DAG code to the local dir such as `~/development/airflow/dags`, then will be sync to `dags/` folder.
 
 #### Requirements.txt
 
-1. Add Python dependencies to `dags/requirements.txt`.  
+1. Add Python dependencies to local dir such as `~/development/airflow/dags/requirements.txt`.  
 2. To test a requirements.txt without running Apache Airflow, use the following script:
 
 ```bash
 ./mwaa-local-env test-requirements
 ```
 
-Let's say you add `aws-batch==0.6` to your `dags/requirements.txt` file. You should see an output similar to:
+Let's say you add `aws-batch==0.6` to your `~/development/airflow/dags/requirements.txt` file. You should see an output similar to:
 
 ```bash
 Installing requirements.txt
@@ -115,6 +118,9 @@ Successfully installed aws-batch-0.6 awscli-1.19.21 botocore-1.20.21 docutils-0.
 
 #### Custom plugins
 
+**TODO**
+The plugins part hasn't been fully tested so the instructions below are just directly from the original repo.
+
 - Create a directory at the root of this repository, and change directories into it. This should be at the same level as `dags/` and `docker`. For example:
 
 ```bash
@@ -128,49 +134,10 @@ cd plugins
 virtual_python_plugin.py
 ```
 
-- (Optional) Add any Python dependencies to `dags/requirements.txt`.
+- (Optional) Add any Python dependencies to `~/development/airflow/dags/requirements.txt`.
 
 **Note**: this step assumes you have a DAG that corresponds to the custom plugin. For examples, see [MWAA Code Examples](https://docs.aws.amazon.com/mwaa/latest/userguide/sample-code.html).
 
 ## What's next?
 
-- Learn how to upload the requirements.txt file to your Amazon S3 bucket in [Installing Python dependencies](https://docs.aws.amazon.com/mwaa/latest/userguide/working-dags-dependencies.html).
-- Learn how to upload the DAG code to the dags folder in your Amazon S3 bucket in [Adding or updating DAGs](https://docs.aws.amazon.com/mwaa/latest/userguide/configuring-dag-folder.html).
-- Learn more about how to upload the plugins.zip file to your Amazon S3 bucket in [Installing custom plugins](https://docs.aws.amazon.com/mwaa/latest/userguide/configuring-dag-import-plugins.html).
-
-## FAQs
-
-The following section contains common questions and answers you may encounter when using your Docker container image.
-
-### Can I test execution role permissions using this repository?
-
-- You can setup the local Airflow's boto with the intended execution role to test your DAGs with AWS operators before uploading to your Amazon S3 bucket. To setup aws connection for Airflow locally see [Airflow | AWS Connection](https://airflow.apache.org/docs/apache-airflow-providers-amazon/stable/connections/aws.html)
-To learn more, see [Amazon MWAA Execution Role](https://docs.aws.amazon.com/mwaa/latest/userguide/mwaa-create-role.html).
-
-### How do I add libraries to requirements.txt and test install?
-
-- A `requirements.txt` file is included in the `/dags` folder of your local Docker container image. We recommend adding libraries to this file, and running locally.
-
-### What if a library is not available on PyPi.org?
-
-- If a library is not available in the Python Package Index (PyPi.org), add the `--index-url` flag to the package in your `dags/requirements.txt` file. To learn more, see [Managing Python dependencies in requirements.txt](https://docs.aws.amazon.com/mwaa/latest/userguide/best-practices-dependencies.html).
-
-## Troubleshooting
-
-The following section contains errors you may encounter when using the Docker container image in this repository.
-
-## My environment is not starting - process failed with dag_stats_table already exists
-
-- If you encountered [the following error](https://issues.apache.org/jira/browse/AIRFLOW-3678): `process fails with "dag_stats_table already exists"`, you'll need to reset your database using the following command:
-
-```bash
-./mwaa-local-env reset-db
-```
-
-## Security
-
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
-
-## License
-
-This library is licensed under the MIT-0 License. See the LICENSE file.
+See more in the original [README](https://github.com/aws/aws-mwaa-local-runner/blob/main/README.md)
