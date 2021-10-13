@@ -32,14 +32,14 @@ docker/
 ## What we changed
 1. We mount the dags folder from our local dir `~/development/airflow/dags` to the docker container so that the code changed locally will be automatically sync.
 
-2. We mount the `requirements.txt` from our local dir `~/development/airflow/dags/requirements.txt` to the docker container so that the dependencies will be automatically sync.
+2. We mount the `requirements.txt` from our local dir `~/development/airflow/requirements.txt` to the docker container so that the dependencies will be automatically sync.
 
 **Reminder**: As this repo is forked so cannot be set as `Private`. By using this mount way, we don't need to publish any of our dags code to this repo but do remember that this repo is `Public` so please do not push any sensitive code onto it
 
 ## Prerequisites
 
-- Have docker installed and enabled
-- Clone the `ssp-airflow` repo to local at dir such as `~/development/airflow/`
+- Have `Docker` installed and enabled
+- Clone the `ssp-airflow` repo to local at dir as `~/development/airflow/`
 
 
 ## Get started
@@ -94,14 +94,14 @@ Add DAG code to the local dir such as `~/development/airflow/dags`, then will be
 
 #### Requirements.txt
 
-1. Add Python dependencies to local dir such as `~/development/airflow/dags/requirements.txt`.  
+1. Add Python dependencies to local dir such as `~/development/airflow/requirements.txt`.  
 2. To test a requirements.txt without running Apache Airflow, use the following script:
 
 ```bash
 ./mwaa-local-env test-requirements
 ```
 
-Let's say you add `aws-batch==0.6` to your `~/development/airflow/dags/requirements.txt` file. You should see an output similar to:
+Let's say you add `aws-batch==0.6` to your `~/development/airflow/requirements.txt` file. You should see an output similar to:
 
 ```bash
 Installing requirements.txt
