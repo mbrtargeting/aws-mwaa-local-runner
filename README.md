@@ -57,7 +57,9 @@ Build the Docker container image using the following command:
 ./mwaa-local-env build-image
 ```
 
-**Note**: it takes several minutes to build the Docker image locally.
+**Note**: 
+ - it takes several minutes to build the Docker image locally.
+ - run `docker system prune --all --volume` to clean up everything and rebuild the docker image if some weird bug happens.
 
 ### Step two: Running Apache Airflow
 
