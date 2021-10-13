@@ -34,7 +34,7 @@ docker/
 
 2. We mount the `requirements.txt` from our local dir `~/development/airflow/dags/requirements.txt` to the docker container so that the dependencies will be automatically sync.
 
-**Reminder**: As this repo is forked so cannot be set as `Private`. By using this mount way, we don't need to publish any of our dags code to this repo but do remember that this repo is `Public` so please do not push any sensitive code onto it.d 
+**Reminder**: As this repo is forked so cannot be set as `Private`. By using this mount way, we don't need to publish any of our dags code to this repo but do remember that this repo is `Public` so please do not push any sensitive code onto it
 
 ## Prerequisites
 
