@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+  local-runner:
+    env_file:
+      - "${HOME}/development/ssp-airflow/dev-env-variables.txt"
+    volumes:
+      - ~/development/airflow/dags:/usr/local/airflow/dags
+      - ~/development/airflow/requirements.txt:/usr/local/airflow/dags/requirements.txt
